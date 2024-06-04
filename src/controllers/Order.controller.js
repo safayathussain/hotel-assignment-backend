@@ -26,3 +26,18 @@ export const placeOrder = asyncHandler(async (req, res) => {
     })
 
 });
+
+
+export const removePastOrder = asyncHandler(async (req, res) => {
+    const param = req.params.orderId;
+    fs.readFile('./JSON/orders.json', 'utf8', (err, data) => {
+        const jsonData = JSON.parse(data);
+        const newArr = jsonData.filter(obj => obj.orderId !== param)
+        fs.writeFile('./JSON/orders.json', JSON.stringify(newArr), 'utf8', (err) => { });
+        res.status(200).json({
+            success: true,
+            message: 'Order removed successfully',
+            
+        })
+    })
+})
